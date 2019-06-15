@@ -15,6 +15,8 @@ public class CharacterController2D : MonoBehaviour
     [SerializeField] private Transform m_CeilingCheck;                          // A position marking where to check for ceilings
     [SerializeField] private Collider2D m_CrouchDisableCollider;                // A collider that will be disabled when crouching
     [SerializeField] private float m_wallCheckDistance;                         // How far we should check for a wall
+    [SerializeField] private Sprite m_wallSprite;                               // Get wall Sprite to determine how far from wall player should be on init
+    [SerializeField] private Camera m_mainCamera;                               // Get camera to set player init position
     
 
     const float k_GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
@@ -39,6 +41,13 @@ public class CharacterController2D : MonoBehaviour
 
     public BoolEvent OnCrouchEvent;
     private bool m_wasCrouching = false;
+    private SpriteRenderer PlayerSpriteRenderer;
+
+    private void Start()
+    {
+        PlayerSpriteRenderer = transform.GetComponent<SpriteRenderer>();
+        transform.position = new Vector2(-(m_mainCamera.transform.position.x) + m_wallSprite.rect.x + PlayerSpriteRenderer.size.x, 0);
+    }
 
     void Update()
     {
